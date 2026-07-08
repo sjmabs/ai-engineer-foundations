@@ -1,17 +1,14 @@
 from anthropic import Anthropic, APIError
 from anthropic.types import MessageParam
-from dotenv import load_dotenv
 
-
-load_dotenv()
 
 class AnthropicClient:
     """
         Thin wrapper around the Anthropic SDK.
         Handles parameter construction, optional temperature, and API error handling.
     """
-    def __init__(self, model: str, temperature: float | None = None):
-        self.client = Anthropic()
+    def __init__(self, api_key: str, model: str, temperature: float | None = None):
+        self.client = Anthropic(api_key=api_key)
         self.temperature = temperature
         self.model = model
 
@@ -53,6 +50,3 @@ class AnthropicClient:
         params = self._build_message_params(system_prompt, messages)
         return self._execute(params)
 
-
-new_client = AnthropicClient(model="claude-sonnet-4-6")
-print(new_client.complete("You are a helpful F1 race assistant", "Who qualified on pole this week at the F1 Austrian GP?"))
